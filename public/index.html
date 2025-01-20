@@ -91,45 +91,50 @@
             const res = await fetch("/list");
             return res.json();
         };
-    
-        // Hiển thị danh sách video dạng <details>
+
+        const createDownloadButton = (videoName) => {
+            const downloadButton = document.createElement("button");
+            downloadButton.textContent = "Download";
+            downloadButton.onclick = () => {
+                const link = document.createElement("a");
+                link.href = `/download/${encodeURIComponent(videoName)}`;
+                link.download = videoName;
+                link.click();
+                console.log(link, link.download);
+            };
+            return downloadButton;
+        };
+
         const displayVideoDetails = async () => {
             const videoList = await fetchVideoList();
             const videoListDiv = document.getElementById("video-list");
-    
+
             videoList.sort((a, b) => a.localeCompare(b)).forEach((video) => {
                 const videoDetails = document.createElement("div");
                 videoDetails.className = "video-details";
-    
-                // Tạo <details> và <summary>
+
                 const detailsElement = document.createElement("details");
                 const summaryElement = document.createElement("summary");
                 summaryElement.textContent = video;
-    
-                // Tạo video (Lazy load)
+
                 const videoElement = document.createElement("video");
                 videoElement.width = 400;
                 videoElement.controls = true;
-                videoElement.style.display = "none"; // Chỉ hiện khi mở
-                videoElement.loading = "lazy"; // Trì hoãn tải
-    
-                // Lazy-load video khi mở <details>
+                videoElement.style.display = "none";
+                videoElement.loading = "lazy";
+
                 detailsElement.addEventListener("toggle", () => {
                     if (detailsElement.open && !videoElement.src) {
                         videoElement.src = `/video/${encodeURIComponent(video)}`;
                         videoElement.style.display = "block";
                     }
                 });
-    
-                // Tạo nút xóa
+
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "Delete";
                 deleteButton.onclick = async () => {
                     if (confirm(`Are you sure to delete "${video}"?`)) {
-                        // Sử dụng phương thức DELETE cho API xóa
-                        const res = await fetch(`/delete/${encodeURIComponent(video)}`, {
-                            method: 'DELETE' // Chuyển sang sử dụng DELETE
-                        });
+                        const res = await fetch(`/delete/${encodeURIComponent(video)}`, { method: "DELETE" });
                         const data = await res.json();
                         if (data.success) {
                             alert("Video deleted!");
@@ -139,21 +144,86 @@
                         }
                     }
                 };
-    
+
                 detailsElement.appendChild(summaryElement);
                 detailsElement.appendChild(videoElement);
                 videoDetails.appendChild(detailsElement);
 
-                const wrapBtn = document.createElement('div');
-                wrapBtn.className = 'wrap-btn';
+                const wrapBtn = document.createElement("div");
+                wrapBtn.className = "wrap-btn";
                 wrapBtn.appendChild(deleteButton);
+                wrapBtn.appendChild(createDownloadButton(video));
                 videoDetails.appendChild(wrapBtn);
-    
+
                 videoListDiv.appendChild(videoDetails);
             });
         };
-    
+
         displayVideoDetails();
+
+    
+        // Hiển thị danh sách video dạng <details>
+        // const displayVideoDetails = async () => {
+        //     const videoList = await fetchVideoList();
+        //     const videoListDiv = document.getElementById("video-list");
+    
+        //     videoList.sort((a, b) => a.localeCompare(b)).forEach((video) => {
+        //         const videoDetails = document.createElement("div");
+        //         videoDetails.className = "video-details";
+    
+        //         // Tạo <details> và <summary>
+        //         const detailsElement = document.createElement("details");
+        //         const summaryElement = document.createElement("summary");
+        //         summaryElement.textContent = video;
+    
+        //         // Tạo video (Lazy load)
+        //         const videoElement = document.createElement("video");
+        //         videoElement.width = 400;
+        //         videoElement.controls = true;
+        //         videoElement.style.display = "none"; // Chỉ hiện khi mở
+        //         videoElement.loading = "lazy"; // Trì hoãn tải
+    
+        //         // Lazy-load video khi mở <details>
+        //         detailsElement.addEventListener("toggle", () => {
+        //             if (detailsElement.open && !videoElement.src) {
+        //                 videoElement.src = `/video/${encodeURIComponent(video)}`;
+        //                 videoElement.style.display = "block";
+        //             }
+        //         });
+    
+        //         // Tạo nút xóa
+        //         const deleteButton = document.createElement("button");
+        //         deleteButton.textContent = "Delete";
+        //         deleteButton.onclick = async () => {
+        //             if (confirm(`Are you sure to delete "${video}"?`)) {
+        //                 // Sử dụng phương thức DELETE cho API xóa
+        //                 const res = await fetch(`/delete/${encodeURIComponent(video)}`, {
+        //                     method: 'DELETE' // Chuyển sang sử dụng DELETE
+        //                 });
+        //                 const data = await res.json();
+        //                 if (data.success) {
+        //                     alert("Video deleted!");
+        //                     location.reload();
+        //                 } else {
+        //                     alert("Failed to delete video.");
+        //                 }
+        //             }
+        //         };
+    
+        //         detailsElement.appendChild(summaryElement);
+        //         detailsElement.appendChild(videoElement);
+        //         videoDetails.appendChild(detailsElement);
+
+        //         const wrapBtn = document.createElement('div');
+        //         wrapBtn.className = 'wrap-btn';
+        //         wrapBtn.appendChild(deleteButton);
+        //         videoDetails.appendChild(wrapBtn);
+    
+        //         videoListDiv.appendChild(videoDetails);
+        //     });
+        // };
+    
+        // displayVideoDetails();
     </script>
     
 </body>

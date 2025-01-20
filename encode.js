@@ -39,7 +39,7 @@ const encodeStorage = () => {
     files.forEach((file) => {
         const filePath = path.join(STORAGE_DIR, file);
 
-        if (fs.lstatSync(filePath).isFile() && !file.endsWith(".file") && !file.endsWith(".tmp")) {
+        if (fs.lstatSync(filePath).isFile() && file.endsWith(".mp4")) {
             console.log(`Encoding file: ${file}`);
 
             // Mã hóa nội dung file
