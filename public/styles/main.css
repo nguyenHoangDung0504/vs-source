@@ -1,0 +1,134 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 1.5vh 5vw;
+    background-color: #333;
+    color: #eee;
+}
+
+a {
+    color: #eee;
+    text-decoration: none;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.3rem .7rem;
+    box-shadow: .1rem .3rem .6rem #111;
+    margin-bottom: .6rem;
+}
+.category-header > h2 {
+    padding: .5rem;
+}
+.category-header > button.add-category-btn {
+    padding: .5rem 1rem;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem 2rem;
+    background-color: #222;
+    min-height: 100px;
+}
+.categories:empty {
+    display: grid;
+    place-items: center;
+}
+.categories:empty::before {
+    content: 'No categories yet';
+    display: block;
+}
+
+.categories > .category {
+    background-color: #444;
+    box-shadow: .2rem .2rem .4rem #000;
+    height: fit-content;
+    padding: .7rem 1rem;
+    display: flex;
+    transition: .3s;
+}
+.categories > .category > a {
+    flex: 1;
+    padding: .15rem;
+    transition: .3s;
+    border-left: .6rem solid white;
+    padding-left: .3rem;
+}
+.categories > .category > a:hover {
+    text-decoration: underline;
+}
+.categories > .category > a:hover::after {
+    content: "";
+}
+
+.video-details {
+    margin-bottom: 15px;
+    border: .5px solid purple;
+    border-radius: 8px;
+    background: #222;
+    padding: 10px;
+    box-shadow: 0 0px 4px deeppink;
+}
+
+details {
+    cursor: pointer;
+}
+
+summary {
+    font-weight: bold;
+    color: #eee;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+video {
+    display: block;
+    margin: 5px 15%;
+    border-radius: 5px;
+    width: 70%;
+}
+
+.wrap-btn {
+    text-align: right;
+}
+
+button.manage-vid-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.manage-vid-btn:hover {
+    background-color: #c0392b;
+}
+
+@media screen and (max-width: 700px) {
+    body {
+        padding: 2px 2px;
+    }
+
+    summary {
+        padding: 4px;
+    }
+
+    video {
+        width: 100%;
+        margin: 2px 0;
+    }
+}

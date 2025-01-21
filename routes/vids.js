@@ -68,9 +68,27 @@ router.get("/download/:name", (req, res) => {
     serveVideo(filePath, req, res, originalFileName); // Đánh dấu là tải xuống
 });
 
-router.delete ("/delete/:name", (req, res) => {
+router.delete("/delete/:name", (req, res) => {
     const originalFileName = decodeURIComponent(req.params.name);
     const files = fs.readFileSync(MAPPING_FILE, "utf8").split("\n").filter(Boolean);
+    const cleanUpMapping = () => {
+        if (!fs.existsSync(MAPPING_FILE)) return;
+
+        // Lấy danh sách các hash trong thư mục storage
+        const storageFiles = fs.readdirSync(STORAGE_DIR)
+            .filter(file => file.endsWith(".file"))
+            .map(file => path.basename(file, ".file"));
+
+        const lines = fs.readFileSync(MAPPING_FILE, "utf8").split("\n").filter(Boolean);
+        const updatedLines = lines.filter((line) => {
+            const decryptedLine = Buffer.from(line, "hex").map(byte => byte ^ SECRET_KEY).toString();
+            const [storedHash] = decryptedLine.split("|");
+            // Chỉ giữ lại các hash có trong storage
+            return storageFiles.includes(storedHash);
+        });
+
+        fs.writeFileSync(MAPPING_FILE, updatedLines.join("\n") + "\n");
+    };
     let hash = null;
 
     for (const line of files) {
@@ -89,8 +107,13 @@ router.delete ("/delete/:name", (req, res) => {
 
     const filePath = path.join(STORAGE_DIR, `${hash}.file`);
     if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-        res.json({ success: true, message: "File deleted" });
+        try {
+            fs.unlinkSync(filePath);
+            cleanUpMapping();
+            res.json({ success: true, message: "File deleted and mapping cleaned" });
+        } catch (err) {
+            res.status(500).json({ success: false, message: "Failed to delete file" });
+        }
     } else {
         res.status(404).json({ success: false, message: "File not found" });
     }
