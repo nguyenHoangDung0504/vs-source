@@ -216,13 +216,4 @@ a {
     #video-list > .video-details {
         margin-bottom: .7rem;
     }
-
-    summary {
-        padding: 4px;
-    }
-
-    video {
-        width: 100%;
-        margin: 2px 0;
-    }
 }
