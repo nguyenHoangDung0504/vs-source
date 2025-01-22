@@ -10,28 +10,62 @@
 
 <body>
     <div class="category-header">
-        <h2>Categories</h2>
-        <button class="add-category-btn">Add category +</button>
+        <div class="header-icon" id="category-header-icon"></div>
+        <h3 class="e">Categories</h3>
+        <div class="icon" id="add-category-btn" title="Add category"></div>
     </div>
     <div class="categories">
-        <div class="category"><a href="/">Category 1</a></div>
-        <div class="category"><a href="/">Category 1</a></div>
-        <div class="category"><a href="/">Category 1</a></div>
-        <div class="category"><a href="/">Category 1</a></div>
+
+        <div class="category">
+            <div class="category-icon"></div>
+            <a href="/">Category 1</a>
+            <div class="icon edit-icon" title="Edit category name"></div>
+            <div class="icon delete-icon" title="Delete category"></div>
+        </div>
+
+        <div class="category">
+            <div class="category-icon"></div>
+            <a href="/">Category 2</a>
+            <div class="icon edit-icon" title="Edit category name"></div>
+            <div class="icon delete-icon" title="Delete category"></div>
+        </div>
+
     </div>
 
-    <h2>Uncategorized Videos</h2>
+    <!-- <hr><br> -->
+
+    <div class="category-header">
+        <div class="header-icon" id="video-header-icon"></div>
+        <h3>Uncategorized Videos</h3>
+    </div>
     <div id="video-list">
 
         <div class="video-details">
-            <details open="">
-                <summary>Video name</summary>
-                <video width="400" controls="" style="display: block;" src=""></video>
+            <details>
+                <summary class="e">
+                    <div class="video-icon"></div>
+                    <a class="video-name e">Video name Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid assumenda dolore, mollitia excepturi temporibus blanditiis molestiae veniam ea architecto maxime alias ullam molestias similique quisquam voluptate illo animi aliquam magnam?</a>
+                    <div class="icon video-info-icon" title="Details"></div>
+                </summary>
+                <video controls="" src="" preload="none" loading="lazy"></video>
             </details>
-            <div class="wrap-btn">
-                <button class="manage-vid-btn">Delete</button>
-                <button class="manage-vid-btn">Download</button>
+            <div class="hash-tags">
+                <a class="tag" href="/">Tag 1</a>
+                <a class="tag" href="/">Tag 2</a>
+                <a class="tag" href="/">Tag 3</a>
             </div>
+        </div>
+
+        <div class="video-details">
+            <details>
+                <summary class="e">
+                    <div class="video-icon"></div>
+                    <a class="video-name e">Video name</a>
+                    <div class="icon video-info-icon" title="Details"></div>
+                </summary>
+                <video controls="" src="" preload="none" loading="lazy"></video>
+            </details>
+            <div class="hash-tags"></div>
         </div>
 
     </div>
