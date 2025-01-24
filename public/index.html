@@ -9,6 +9,34 @@
 </head>
 
 <body>
+    <div id="modal-container" >
+        <div id="modal">
+            <div id="modal-header">
+                <h3>Video details</h3>
+                <div id="close-modal"></div>
+            </div>
+            <div id="modal-body">
+                <div class="line">
+                    <div class="modal-label">Name: </div>
+                    <div class="modal-content" id="video-name">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet tempora voluptate expedita praesentium! Molestias, laborum, optio non facilis cupiditate repudiandae rem voluptates praesentium natus debitis dolorem ad eius? Temporibus, in!</div>                    
+                </div>
+                <div class="line">
+                    <div class="modal-label">Description: </div>
+                    <div contenteditable spellcheck="false" class="modal-content" id="video-desciption">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet tempora voluptate expedita praesentium! Molestias, laborum, optio non facilis cupiditate repudiandae rem voluptates praesentium natus debitis dolorem ad eius? Temporibus, in!</div>                    
+                </div>
+                <div class="line">
+                    <div class="modal-label">Category: </div>
+                    <div class="modal-content" id="video-category">
+                        <select>
+                            <option value="a">duma</option>
+                            <option value="a">duma duma duma</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="category-header">
         <div class="header-icon" id="category-header-icon"></div>
         <h3 class="e">Categories</h3>
@@ -32,6 +60,7 @@
     <div class="category-header">
         <div class="header-icon" id="video-header-icon"></div>
         <h3 class="e">Uncategorized Videos</h3>
+        <input type="text" id="filter" placeholder="Keyword or #hashtag...">
     </div>
     <div id="video-list">
         <div class="video-details">
