@@ -3,14 +3,14 @@ const path = require('path');
 const os = require('os');
 const app = express();
 
-const videoController = require('./controllers/videos');
+const vids = require('./routes-old/vids');
 
 const PORT = 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-app.use('/vids', videoController);
+app.use('/vids', vids);
 
 app.listen(PORT, () => {
     console.log(`Server đang chạy trên http://${getServerWiFiIP()}:${PORT}`);

@@ -87,8 +87,8 @@
 
     <script>
         // Fetch danh sách video từ server
-        const fetchVideoList = async () => {
-            const res = await fetch("/list");
+        const getAllVideoName = async () => {
+            const res = await fetch("/vids");
             return res.json();
         };
 
@@ -97,7 +97,7 @@
             downloadButton.textContent = "Download";
             downloadButton.onclick = () => {
                 const link = document.createElement("a");
-                link.href = `/download/${encodeURIComponent(videoName)}`;
+                link.href = `/vids/${encodeURIComponent(videoName)}/?download=1`;
                 link.download = videoName;
                 link.click();
                 console.log(link, link.download);
@@ -106,16 +106,16 @@
         };
 
         const displayVideoDetails = async () => {
-            const videoList = await fetchVideoList();
+            const videoList = await getAllVideoName();
             const videoListDiv = document.getElementById("video-list");
 
-            videoList.sort((a, b) => a.localeCompare(b)).forEach((video) => {
+            videoList.sort((a, b) => a.localeCompare(b)).forEach((videoName) => {
                 const videoDetails = document.createElement("div");
                 videoDetails.className = "video-details";
 
                 const detailsElement = document.createElement("details");
                 const summaryElement = document.createElement("summary");
-                summaryElement.textContent = video;
+                summaryElement.textContent = videoName;
 
                 const videoElement = document.createElement("video");
                 videoElement.width = 400;
@@ -125,7 +125,7 @@
 
                 detailsElement.addEventListener("toggle", () => {
                     if (detailsElement.open && !videoElement.src) {
-                        videoElement.src = `/video/${encodeURIComponent(video)}`;
+                        videoElement.src = `/vids/${encodeURIComponent(videoName)}`;
                         videoElement.style.display = "block";
                     }
                 });
@@ -133,8 +133,8 @@
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "Delete";
                 deleteButton.onclick = async () => {
-                    if (confirm(`Are you sure to delete "${video}"?`)) {
-                        const res = await fetch(`/delete/${encodeURIComponent(video)}`, { method: "DELETE" });
+                    if (confirm(`Are you sure to delete "${videoName}"?`)) {
+                        const res = await fetch(`/vids/${encodeURIComponent(videoName)}`, { method: "DELETE" });
                         const data = await res.json();
                         if (data.success) {
                             alert("Video deleted!");
@@ -152,7 +152,7 @@
                 const wrapBtn = document.createElement("div");
                 wrapBtn.className = "wrap-btn";
                 wrapBtn.appendChild(deleteButton);
-                wrapBtn.appendChild(createDownloadButton(video));
+                wrapBtn.appendChild(createDownloadButton(videoName));
                 videoDetails.appendChild(wrapBtn);
 
                 videoListDiv.appendChild(videoDetails);

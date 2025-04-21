@@ -6,12 +6,12 @@ const router = express.Router();
 const rootDir = process.cwd();
 
 const STORAGE_DIR = path.join(rootDir, "storage");
-const MAPPING_FILE = path.join(rootDir, "file_mapping.txt");
+const MAPPING_FILE = path.join(rootDir, "file-mapping.txt");
 const SECRET_KEY = 29;
 const cache = new Map();
 const cacheTTL = 1 * 60 * 1000;
 
-router.get("/", (req, res) => {
+router.get("/", (_, res) => {
     const files = fs.readdirSync(STORAGE_DIR).filter(file => file.endsWith(".file"));
     const videoList = files.map(file => {
         const hash = file.replace(/\.file$/, "");
@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
     res.json(videoList);
 });
 
-router.get("/watch/:name", (req, res) => {
+router.get("/:name", (req, res) => {
     const originalFileName = decodeURIComponent(req.params.name);
     const files = fs.readFileSync(MAPPING_FILE, "utf8").split("\n").filter(Boolean);
     let hash = null;
@@ -68,7 +68,7 @@ router.get("/download/:name", (req, res) => {
     serveVideo(filePath, req, res, originalFileName); // Đánh dấu là tải xuống
 });
 
-router.delete("/delete/:name", (req, res) => {
+router.delete("/:name", (req, res) => {
     const originalFileName = decodeURIComponent(req.params.name);
     const files = fs.readFileSync(MAPPING_FILE, "utf8").split("\n").filter(Boolean);
     const cleanUpMapping = () => {
@@ -124,7 +124,7 @@ setInterval(cleanCache, cacheTTL / 2);
 module.exports = router;
 
 function decodeHeader(buffer) {
-    Buffer.from(buffer.map(byte => byte ^ SECRET_KEY));
+    return Buffer.from(buffer.map(byte => byte ^ SECRET_KEY));
 }
 
 function getOriginalFileName(hash) {
@@ -193,13 +193,14 @@ function serveVideo(filePath, req, res, downloadName) {
         headers["Content-Length"] = chunkSize;
 
         let buffer = getFromCache(filePath);
+        let responseChunk;
+
         if (!buffer) {
             console.log("Cache miss. Reading file...");
             buffer = fs.readFileSync(filePath);
             addToCache(filePath, buffer);
         }
 
-        let responseChunk;
         if (start < 1024) {
             const headerSize = Math.min(1024, buffer.length);
             const decodedHeader = decodeHeader(buffer.slice(0, headerSize));
